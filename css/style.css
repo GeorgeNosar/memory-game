@@ -3,6 +3,7 @@ body {
 }
 p {
 	text-align: center;
+	color: #fff;
 }
 .cards-logo {
 	padding-top: 10%;
@@ -11,6 +12,13 @@ h1 {
 	text-transform: uppercase;
 	color: #fff;
 	text-align: center;
+}
+h3 {
+	color: #fff;
+	text-align: center;
+}
+a {
+	text-decoration: none;
 }
 .button {
 	display: inline-block;
@@ -21,4 +29,12 @@ h1 {
 	margin-top: 1%;
 	border-radius: 5px;
 	font-size: 1.3em;
+}
+.card {
+	padding: 10% 0%;
+	width: 120%;
+	height: auto;
+}
+#score, #retry {
+	padding-top: 35%;
 }
