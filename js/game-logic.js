@@ -117,12 +117,30 @@ function hideCards() {
 	}
 }
 
+/*открывает пользователю возможность взаимодействовать с картами*/
+function openAbiltyToClickCards() {
+	for(var i = 1; i <= cardsNumber; i++) {
+			document.getElementById(''+i).setAttribute('onclick',
+			"cardClicked("+i+")" );
+		}		
+}
+
+/*закрывает пользователю возможность взаимодействовать с картами*/
+function closeAbiltyToClickCards() {
+	for(var i = 1; i <= cardsNumber; i++) {
+			document.getElementById(''+i).setAttribute('onclick',
+			'' );
+		}		
+}
+
+
 /*запускает игру*/
 function startGame() {
 	/*генерирует карты и их расположение*/
 	generateCards();
 	/*через 5 секунд переворачивает их рубашкой вверх*/
 	setTimeout(hideCards, 5000);
+	setTimeout(openAbiltyToClickCards, 5000);
 }
 
 
@@ -138,6 +156,8 @@ var clicks = 0;
 var openedCards = [];
 /*массив id открытых карт*/
 var opCardsIds = [];
+/*количество удаленных с поля карт*/
+var cardsDeleted = 0;
 
 /*производит поиск картинки по id элемента*/
 function findImgSrc(id) {
@@ -153,7 +173,6 @@ function findImgSrc(id) {
 
 /*поворачивает открытые карты рубашкой вверх*/
 function hideOpenedCards() {
-	alert(opCardsIds[0]);
 	document.getElementById(''+opCardsIds[0]).src = '../img/card-shirt.png';
 	document.getElementById(''+opCardsIds[1]).src = '../img/card-shirt.png';
 	openedCards = [];
@@ -162,16 +181,22 @@ function hideOpenedCards() {
 
 /*убирает открытые карты с поля полностью*/
 function takeOffOpenedCards() {
-	document.getElementById(''+opCardsIds[0]).src = '';
-	document.getElementById(''+opCardsIds[1]).src = '';
+	document.getElementById(''+opCardsIds[0]).src = '../img/no-card.png';
+	document.getElementById(''+opCardsIds[1]).src = '../img/no-card.png';
 	openedCards = [];
 	opCardsIds = [];
+	cardsDeleted += 2;
+	if(cardsDeleted === cardsNumber) {
+		location.href='end.html';
+	}
 }
 
 /*скрипт, выполняющийся при нажатии на карту с номером id*/
 function cardClicked(id) {
 	clicks += 1;
 	opCardsIds.push(id);
+	/*блокировка доступа к нажатой карте*/
+	document.getElementById(''+id).setAttribute('onclick', '' );
 	switch(clicks) {
 		case 1: 
 			var imgSrc = findImgSrc(id);
@@ -179,15 +204,18 @@ function cardClicked(id) {
 			openedCards.push(imgSrc);
 			break;
 		case 2:
+			closeAbiltyToClickCards(); //закрываем доступ к взаимодействию, пока происходит обработка
 			clicks = 0;
 			var imgSrc = findImgSrc(id);
 			document.getElementById(''+id).src = imgSrc;
 			openedCards.push(imgSrc);
 			if( !(openedCards[0] === openedCards[1]) ) {
 				setTimeout(hideOpenedCards, 1000);
+				setTimeout(openAbiltyToClickCards, 1000);
 			}
 			else {
 				setTimeout(takeOffOpenedCards, 1000);
+				setTimeout(openAbiltyToClickCards, 1000);
 			}
 	}
 }
