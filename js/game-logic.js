@@ -1,3 +1,5 @@
+/*СТАРТ ИГРЫ, ГЕНЕРАЦИЯ ИГРОВОГО ПОЛЯ*/
+
 /*количество карт на игровом поле
   используется в некоторых циклах*/
 var cardsNumber = 18;
@@ -36,7 +38,7 @@ function checkCard(card) {
 	return false;
 }
 
-
+/*возвращает адрес рандомной карты*/
 function getRandomCard() {
 	var imgSrc;
 	var cardTaken = true;
@@ -65,6 +67,8 @@ function getRandomCard() {
 			imgSrc += ".png";
 			cardTaken = checkCard(imgSrc);
 		}
+	/*выполняется дважды для соответствия массиву позиций*/
+	cardsArray.push(imgSrc);
 	cardsArray.push(imgSrc);
 	return imgSrc; 
 }
@@ -119,4 +123,71 @@ function startGame() {
 	generateCards();
 	/*через 5 секунд переворачивает их рубашкой вверх*/
 	setTimeout(hideCards, 5000);
+}
+
+
+
+
+
+/*ИГРОВОЙ ПРОЦЕСС*/
+
+
+/*счетчик кликов*/
+var clicks = 0;
+/*массив карт, которые находятся открытыми*/
+var openedCards = [];
+/*массив id открытых карт*/
+var opCardsIds = [];
+
+/*производит поиск картинки по id элемента*/
+function findImgSrc(id) {
+	var cardIndex;
+	for(var i = 0; i < positionArray.length; i++) {
+		if(id === positionArray[i]) {
+			cardIndex = i;
+			break;
+		}
+	}
+	return cardsArray[cardIndex];
+}
+
+/*поворачивает открытые карты рубашкой вверх*/
+function hideOpenedCards() {
+	alert(opCardsIds[0]);
+	document.getElementById(''+opCardsIds[0]).src = '../img/card-shirt.png';
+	document.getElementById(''+opCardsIds[1]).src = '../img/card-shirt.png';
+	openedCards = [];
+	opCardsIds = [];
+}
+
+/*убирает открытые карты с поля полностью*/
+function takeOffOpenedCards() {
+	document.getElementById(''+opCardsIds[0]).src = '';
+	document.getElementById(''+opCardsIds[1]).src = '';
+	openedCards = [];
+	opCardsIds = [];
+}
+
+/*скрипт, выполняющийся при нажатии на карту с номером id*/
+function cardClicked(id) {
+	clicks += 1;
+	opCardsIds.push(id);
+	switch(clicks) {
+		case 1: 
+			var imgSrc = findImgSrc(id);
+			document.getElementById(''+id).src = imgSrc;
+			openedCards.push(imgSrc);
+			break;
+		case 2:
+			clicks = 0;
+			var imgSrc = findImgSrc(id);
+			document.getElementById(''+id).src = imgSrc;
+			openedCards.push(imgSrc);
+			if( !(openedCards[0] === openedCards[1]) ) {
+				setTimeout(hideOpenedCards, 1000);
+			}
+			else {
+				setTimeout(takeOffOpenedCards, 1000);
+			}
+	}
 }
