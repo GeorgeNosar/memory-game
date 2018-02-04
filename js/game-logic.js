@@ -158,6 +158,8 @@ var openedCards = [];
 var opCardsIds = [];
 /*количество удаленных с поля карт*/
 var cardsDeleted = 0;
+/*заработанные очки*/
+var score = 0;
 
 /*производит поиск картинки по id элемента*/
 function findImgSrc(id) {
@@ -186,9 +188,29 @@ function takeOffOpenedCards() {
 	openedCards = [];
 	opCardsIds = [];
 	cardsDeleted += 2;
+	/*когда все карты удалены, игра заканчивается,
+	  осуществляется переход на конечную страницу
+	  с параметром передающим значение очков*/
 	if(cardsDeleted === cardsNumber) {
-		location.href='end.html';
+		location.href='end.html?score=' + score;
 	}
+}
+
+/*добавляет очки*/
+function addScore() {
+	score += 42 * (cardsNumber - cardsDeleted);
+	document.getElementById('score').innerHTML = 
+	"<span id='score'>" + score + "</span>";
+}
+
+/*отнимает очки*/
+function subScore() {
+	score -= 42 * cardsDeleted;
+	if(score < 0) {
+		score = 0;
+	}
+	document.getElementById('score').innerHTML = 
+	"<span id='score'>" + score + "</span>";
 }
 
 /*скрипт, выполняющийся при нажатии на карту с номером id*/
@@ -209,13 +231,33 @@ function cardClicked(id) {
 			var imgSrc = findImgSrc(id);
 			document.getElementById(''+id).src = imgSrc;
 			openedCards.push(imgSrc);
+			/*если карты не совпали*/
 			if( !(openedCards[0] === openedCards[1]) ) {
+				/*переворачиваем назад рубашкой вверх*/
 				setTimeout(hideOpenedCards, 1000);
+				/*открываем возможность взаимодействия*/
 				setTimeout(openAbiltyToClickCards, 1000);
+				/*отминаем очки*/
+				setTimeout(subScore, 1000);
 			}
+			/*если совпали*/
 			else {
+				/*убираем с поля*/
 				setTimeout(takeOffOpenedCards, 1000);
 				setTimeout(openAbiltyToClickCards, 1000);
+				/*добавляем очки*/
+				setTimeout(addScore, 1000);
 			}
 	}
+}
+
+/*парсим переданное значение очков со страницы игры
+  и записываем его*/
+function parseScore() {
+	var endPageScore = window.location.href.split("?")[1].split("=")[1];
+    document.getElementById("score-board").innerHTML = 
+    "<h3 id='score-board'>" +
+	"	Поздравляем!<br>"   +
+	"	Ваш итоговый счет: " + endPageScore +
+	"</h3>";
 }

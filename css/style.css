@@ -1,23 +1,22 @@
 body {
 	background-color: #1b692d;
+	color: #fff;
 }
 p {
 	text-align: center;
-	color: #fff;
 }
 .cards-logo {
 	padding-top: 10%;
 }
 h1 {
 	text-transform: uppercase;
-	color: #fff;
 	text-align: center;
 }
 h3 {
-	color: #fff;
 	text-align: center;
 }
 a {
+	color: #fff;
 	text-decoration: none;
 }
 .button {
@@ -35,6 +34,6 @@ a {
 	width: 120%;
 	height: auto;
 }
-#score, #retry {
-	padding-top: 35%;
+#score {
+	display: inline;
 }

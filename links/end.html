@@ -5,18 +5,16 @@
 	<title>Memory Game</title>
 	<link rel="stylesheet" href="../css/style.css" />
 </head>
-<body>
+<body onload="parseScore()">
 
 	<p class="cards-logo">
 		<img src="../img/group-2.png" alt="">
 	</p>
-	<h3>
-		Поздравляем!<br>
-		Ваш итоговый счет: score
-	</h3>
+	<h3 id='score-board'></h3>
 	<p>
 		<a href="game.html" class="button">Еще раз</a>
 	</p>	
 
+<script src="../js/game-logic.js"></script>
 </body>
 </html>
