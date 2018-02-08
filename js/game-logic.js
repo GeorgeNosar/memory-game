@@ -91,6 +91,9 @@ function setCard(imgSrc) {
 	*/
 	document.getElementById(''+position).src = imgSrc;
 	positionArray.push(position);
+
+	/* Для тестирования*/
+	document.getElementById(''+position).setAttribute('data-tid', 'Card');
 }
 
 /*генерирует рандомное игровое поле*/
@@ -114,6 +117,9 @@ function hideCards() {
 	for(var i = 0; i < cardsNumber; i++) {
 		document.getElementById(''+(i+1)).src =
 		'../img/card-shirt.png';
+
+		/* Для тестирования*/
+		document.getElementById(''+(i+1)).setAttribute('data-tid', 'Card-flipped');
 	}
 }
 
@@ -152,9 +158,9 @@ function startGame() {
 
 /*счетчик кликов*/
 var clicks = 0;
-/*массив карт, которые находятся открытыми*/
+/*буффер карт, которые находятся открытыми*/
 var openedCards = [];
-/*массив id открытых карт*/
+/*буффер id открытых карт*/
 var opCardsIds = [];
 /*количество удаленных с поля карт*/
 var cardsDeleted = 0;
@@ -177,6 +183,10 @@ function findImgSrc(id) {
 function hideOpenedCards() {
 	document.getElementById(''+opCardsIds[0]).src = '../img/card-shirt.png';
 	document.getElementById(''+opCardsIds[1]).src = '../img/card-shirt.png';
+	//для тестов
+	document.getElementById(''+opCardsIds[0]).setAttribute('data-tid', 'Card-flipped');
+	document.getElementById(''+opCardsIds[1]).setAttribute('data-tid', 'Card-flipped');
+	//очистка буфферов
 	openedCards = [];
 	opCardsIds = [];
 }
@@ -185,6 +195,10 @@ function hideOpenedCards() {
 function takeOffOpenedCards() {
 	document.getElementById(''+opCardsIds[0]).src = '../img/no-card.png';
 	document.getElementById(''+opCardsIds[1]).src = '../img/no-card.png';
+	//для тестов
+	document.getElementById(''+opCardsIds[0]).setAttribute('data-tid', '');
+	document.getElementById(''+opCardsIds[1]).setAttribute('data-tid', '');
+	//очичтка буфферов
 	openedCards = [];
 	opCardsIds = [];
 	cardsDeleted += 2;
@@ -219,6 +233,11 @@ function cardClicked(id) {
 	opCardsIds.push(id);
 	/*блокировка доступа к нажатой карте*/
 	document.getElementById(''+id).setAttribute('onclick', '' );
+	//для тестов
+	document.getElementById(''+id).setAttribute('data-tid', 'Card');
+	/*в зависимости от того, сколько карт открыто, 
+	  выполняем подходящие для этого действия
+	*/
 	switch(clicks) {
 		case 1: 
 			var imgSrc = findImgSrc(id);
